@@ -23,11 +23,10 @@ if ! [ -x /usr/bin/chef ]; then
 fi
 SCRIPT
 
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
   config.vm.box = "chef-book"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
   config.vm.host_name = 'chef-book'
-
   config.vm.provision :shell, :inline => $script
 end
 ```

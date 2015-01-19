@@ -49,7 +49,7 @@ Lord it over your friends.  They will respect you.
 
 ## Vagrant File
 
-Next you'll need to open up the `Vagrantfile` and add the run_list to it so chef-solo can do its magic.
+Next you'll need to open up the `Vagrantfile` and replace it with the below.  Note how you add the run_list to it so chef-solo can do its magic.
 
 ```ruby
 # -*- mode: ruby -*-
@@ -64,7 +64,6 @@ dpkg-reconfigure -f noninteractive tzdata
 if ! [ -a /etc/chef/client.pem ]; then
   curl -L https://www.opscode.com/chef/install.sh | sudo bash
 fi
-ntpdate tick.uh.edu
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -76,9 +75,8 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "base"
   end
 end
-
-
 ```
+
 Notice I commented out the `:shell` provisioning and added the `chef_solo` provisioner. Save this, exit the editor, and run `vagrant halt` then `vagrant up` and if needed `vagrant provision` and you should see something like this:
 ```bash
 [~/vagrant/chef-book] % vagrant up
