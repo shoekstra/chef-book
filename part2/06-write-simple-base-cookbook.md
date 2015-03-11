@@ -15,56 +15,43 @@ A first recipe
 
 Before we jump into a cookbook, let's look at creating a simple recipe.
 
-Log in as root into your Vagrant VM and edit a file called `whatever.rb`:
+So, you're still logged into your vm as root?  Create a file called `whatever.rb`:
 
 ```bash
-[~/vagrant/chef-book] % vagrant ssh
-Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.2.0-23-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com/
-Welcome to your Vagrant-built virtual machine.
-Last login: Sat Jun 28 12:42:11 2014 from 10.0.2.2
-vagrant@chef-book:~$ sudo su -
 root@chef-book:~# nano whatever.rb
 ```
 
 Let's add this bit of ruby, this will be our recipe:
 
 ```rb
-
 file '/tmp/x.txt' do
   content 'hello world'
 end
-
 ```
 
 Save that file, and now run `chef-client`:
 
 ```bash
 root@chef-book:~# chef-client -z whatever.rb
-[2014-06-28T12:50:37-07:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
-
-Starting Chef Client, version 11.14.0.alpha.1
+[2015-03-11T08:33:53-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: []
 Synchronizing Cookbooks:
 Compiling Cookbooks...
-[2014-06-28T12:50:38-07:00] WARN: Node chef-book has an empty run list.
+[2015-03-11T08:33:59-05:00] WARN: Node chef-book has an empty run list.
 Converging 1 resources
 Recipe: @recipe_files::/root/whatever.rb
   * file[/tmp/x.txt] action create
     - create new file /tmp/x.txt
     - update content in file /tmp/x.txt from none to b94d27
-        --- /tmp/x.txt	2014-06-28 12:50:38.529763792 -0700
-        +++ /tmp/.x.txt20140628-22580-1t8rh4f	2014-06-28 12:50:38.529763792 -0700
-        @@ -1 +1,2 @@
-        +hello world
-
+    --- /tmp/x.txt	2015-03-11 08:33:59.425050806 -0500
+    +++ /tmp/.x.txt20150311-7341-64namr	2015-03-11 08:33:59.425050806 -0500
+    @@ -1 +1,2 @@
+    +hello world
 
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 1/1 resources updated in 1.363444007 seconds
-root@chef-book:~#
+Chef Client finished, 1/1 resources updated in 6.145760521 seconds
 ```
 
 Now you can verify that there's a new file, `/tmp/x.txt`.  
@@ -107,7 +94,8 @@ Go ahead and run `chmod +x converge.sh` to make it executable, then run it.
 ```bash
 root@chef-book:~/core# chmod +x converge.sh
 root@chef-book:~/core# ./converge.sh
-[2014-06-28T13:00:05-07:00] FATAL: Cannot load configuration from core.json
+[2015-03-11T08:35:25-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
+[2015-03-11T08:35:25-05:00] FATAL: Cannot load configuration from core.json
 root@chef-book:~#
 ```
 
@@ -132,20 +120,41 @@ Go ahead and run `./converge.sh` again, the output should be different:
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.6.2
-Compiling Cookbooks...
-[2013-10-21T15:21:36-05:00] ERROR: Running exception handlers
-[2013-10-21T15:21:36-05:00] ERROR: Exception handlers complete
-[2013-10-21T15:21:36-05:00] FATAL: Stacktrace dumped to /root/core/chef-stacktrace.out
-Chef Client failed. 0 resources updated
-[2013-10-21T15:21:36-05:00] FATAL: Chef::Exceptions::ChildConvergeError: Chef run process exited unsuccessfully (exit code 1)
-root@chef-book:~/base# cat /root/core/chef-stacktrace.out
+root@chef-book:~/core# ./converge.sh
+[2015-03-11T08:38:57-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
+Starting Chef Client, version 12.0.3
+resolving cookbooks for run list: ["base::default"]
+
+================================================================================
+Error Resolving Cookbooks for Run List:
+================================================================================
+
+Missing Cookbooks:
+------------------
+No such cookbook: base
+
+Expanded Run List:
+------------------
+* base::default
+
+
+Running handlers:
+[2015-03-11T08:39:03-05:00] ERROR: Running exception handlers
+Running handlers complete
+[2015-03-11T08:39:03-05:00] ERROR: Exception handlers complete
+[2015-03-11T08:39:03-05:00] FATAL: Stacktrace dumped to /root/.chef/local-mode-cache/cache/chef-stacktrace.out
+Chef Client failed. 0 resources updated in 6.144336674 seconds
+[2015-03-11T08:39:03-05:00] ERROR: undefined method `cheffish' for nil:NilClass
+[2015-03-11T08:39:05-05:00] FATAL: Chef::Exceptions::ChildConvergeError: Chef run process exited unsuccessfully (exit code 1)
+
 ```
 
-The error that stands out in `chef-stacktrace.out` is this one:
+The bit that should that stand out is:
 
 ```
-Chef::Exceptions::CookbookNotFound: Cookbook base not found. If you're loading base from another cookbook, make sure you configure the dependency in your metadata
+Missing Cookbooks:
+------------------
+No such cookbook: base
 ```
 
 And that's expected, you haven't created one yet!
@@ -175,28 +184,46 @@ root@chef-book:~/core/cookbooks/base/recipes# nano default.rb
 package 'vim'
 ```
 
-Now logically this will install `vim` right? Yep, and we're about to see that. 
+Now logically this will install `vim` right? Yep, and we're about to see that.
+
+To ensure this test works, let's uninstall vim from our vagrant box first:
+
+```bash
+root@chef-book:~/core/cookbooks/base/recipes# apt-get purge vim -y
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages will be REMOVED:
+  vim*
+0 upgraded, 0 newly installed, 1 to remove and 0 not upgraded.
+After this operation, 2,237 kB disk space will be freed.
+(Reading database ... 106923 files and directories currently installed.)
+Removing vim (2:7.4.052-1ubuntu3) ...
+update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/vi (vi) in auto mode
+update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/view (view) in auto mode
+update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/ex (ex) in auto mode
+update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/rview (rview) in auto mode
+```
+
 Go ahead and go up to `~/core`, and run `./converge.sh`, 
 you should see something like this:
 
 ```bash
 root@chef-book:~/core/cookbooks/base/recipes# cd ~/core
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 1 resources
 Recipe: base::default
-  * package[vim] action install
-    - install version 2:7.3.429-2ubuntu2.1 of package vim
-
+  * apt_package[vim] action install
+    - install version 2:7.4.052-1ubuntu3 of package vim
 
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 1/1 resources updated in 18.117095411 seconds
+Chef Client finished, 1/1 resources updated in 12.153926566 seconds
 root@chef-book:~/core#
 ```
 
@@ -206,20 +233,18 @@ again, it should look like this:
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 1 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
+  * apt_package[vim] action install (up to date)
 
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 0/1 resources updated in 2.859733579 seconds
-root@chef-book:~/core#
+Chef Client finished, 0/1 resources updated in 6.199481804 seconds
 ```
 
 This is important, as you can see it didn't _reinstall_ it. It just checked 
@@ -255,22 +280,21 @@ Go ahead and `cd ~/core/` and run `./converge.sh` again.
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 3 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install
+    - install version 1:4.2.6.p5+dfsg-3ubuntu2.14.04.2 of package ntp
+  * apt_package[build-essential] action install (up to date)
 
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 0/3 resources updated in 1.174067007 seconds
-root@chef-book:~/core#
+Chef Client finished, 1/3 resources updated in 13.328761076 seconds
 ```
 
 Congrats! You can now install packages via Chef and confirm that they are there.
@@ -331,21 +355,15 @@ cookbook_file '/etc/ssh/ssh_config' do
 end
 
 service 'ssh' do
+  provider Chef::Provider::Service::Upstart
   action [:enable, :start]
   supports :status => true, :restart => true
 end
 ```
 
-*Note*: If you decided to use Ubuntu 14.04 Trusty Tahr, you will need to modify 
-the `service "ssh"` block as below to call the Upstart provider instead of the 
-shell as in previous versions.
-
-```ruby
-service "ssh" do
-  provider Chef::Provider::Service::Upstart
-  # as before...
-end
-```
+*Note*: Because we are using Ubuntu 14.04 Trusty Tahr, you will need to include 
+the `provider Chef::Provider::Service::Upstart` line to `service "ssh"` block to
+call the Upstart provider instead of the shell as in previous versions.
 
 Oh, you'll need an `ssh_config` file. Copying it from `/etc/ssh/` will be fine.
 
@@ -366,14 +384,20 @@ Go ahead and run your `./converge` again; you should see something like this:
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.6.2
+Starting Chef Client, version 12.0.3
+resolving cookbooks for run list: ["base::default"]
+Synchronizing Cookbooks:
+  - base
 Compiling Cookbooks...
 Converging 3 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
-Chef Client finished, 0 resources updated
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install (up to date)
+  * apt_package[build-essential] action install (up to date)
+
+Running handlers:
+Running handlers complete
+Chef Client finished, 0/3 resources updated in 6.246738599 seconds
 ```
 
 Ah, you got me. We didn't add the ssh recipe to the default run, did we? Go 
@@ -392,34 +416,28 @@ include_recipe 'base::ssh'
 Ok, now go ahead and run `./converge.sh` again. You should see something like this:
 
 ```bash
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 6 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install (up to date)
+  * apt_package[build-essential] action install (up to date)
 Recipe: base::ssh
-  * package[openssh-server] action install (up to date)
-  * service[ssh] action enable
-    - enable service service[ssh]
-
-  * service[ssh] action start (up to date)
+  * apt_package[openssh-server] action install (up to date)
   * cookbook_file[/etc/ssh/ssh_config] action create
     - change mode from '0644' to '0640'
-
+  * service[ssh] action enable (up to date)
+  * service[ssh] action start (up to date)
   * service[ssh] action reload
     - reload service service[ssh]
 
-  * service[ssh] action start (up to date)
-
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 3/9 resources updated in 1.358184628 seconds
+Chef Client finished, 2/8 resources updated in 6.442284201 seconds
 ```
 
 Ok, so let's take this one step farther. Go ahead and open up `cookbooks/base/files/default/ssh_config` and put a comment at the top of the file. Diff the source file in the cookbook with the real file on disk.
@@ -544,27 +562,25 @@ And let's converge.
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default", "base::ssh"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 6 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install (up to date)
+  * apt_package[build-essential] action install (up to date)
 Recipe: base::ssh
-  * package[openssh-server] action install (up to date)
+  * apt_package[openssh-server] action install (up to date)
   * cookbook_file[/etc/ssh/ssh_config] action create (up to date)
   * service[ssh] action enable (up to date)
   * service[ssh] action start (up to date)
 
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 0/7 resources updated in 1.221278403 seconds
-root@chef-book:~/core#
+Chef Client finished, 0/7 resources updated in 6.329689571 seconds
 ```
 
 Doh! We did it again: we didn't add it to the recipe. This time, let's add it to the `run_list` instead.
@@ -581,53 +597,48 @@ And change the file to look like this:
 }
 ```
 
-Now `./converge` and you should see something like this (I debugged this as I was writing it, it'll be a tad bit different, but you get the point) :
+Now `./converge` and you should see something like this:
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-Starting Chef Client, version 11.14.0.alpha.1
+Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default", "base::ssh", "base::deployer"]
 Synchronizing Cookbooks:
   - base
 Compiling Cookbooks...
 Converging 10 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install (up to date)
+  * apt_package[build-essential] action install (up to date)
 Recipe: base::ssh
-  * package[openssh-server] action install (up to date)
+  * apt_package[openssh-server] action install (up to date)
+  * cookbook_file[/etc/ssh/ssh_config] action create (up to date)
   * service[ssh] action enable (up to date)
   * service[ssh] action start (up to date)
-  * cookbook_file[/etc/ssh/ssh_config] action create (up to date)
 Recipe: base::deployer
   * group[deployer] action create
     - create group[deployer]
-
   * user[deployer] action create
-    - create user user[deployer]
-
+    - create user deployer
   * directory[/home/deployer/.ssh] action create
     - create new directory /home/deployer/.ssh
     - change owner from '' to 'deployer'
     - change group from '' to 'deployer'
-
   * cookbook_file[/home/deployer/.ssh/authorized_keys] action create_if_missing
     - create new file /home/deployer/.ssh/authorized_keys
-    - update content in file /home/deployer/.ssh/authorized_keys from none to 8efa71
-        --- /home/deployer/.ssh/authorized_keys	2014-07-02 20:38:02.304652072 -0700
-        +++ /tmp/.authorized_keys20140702-2386-bxkwv9	2014-07-02 20:38:02.312651972 -0700
-        @@ -1 +1,2 @@
-        +ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5IsTC7C/s56KS5Xs1+MeFfH852r+6DRqayRhOSopiYkg5M6vBULtPBGRYf6o6OfbEyPqbQdHlAv+MFmwTBnIUGM3dcKwCmwGib8/Bzrei2SU8FhZAptwrXvfG7xgvY1VSGNFnilA8zDV05WO2gtEVk1xGQMyqBh5hTj4xamp415yWGVVCP8SxlkvAGf/lTVX9sC+kcm3RPTdCrkPTqPGm64H+G5TSo/9XQhP1ie5xgC78/lO3Duq3onTOGHc9fbfCik9icuIfOfc5RAYm2x63iKgkl34XVYq6G4Ua70wSYQBzTTClTD1jbp0ZTgt1IUvfsboGyr42HdxnwU1TtB8/ root@chef-book
+    - update content in file /home/deployer/.ssh/authorized_keys from none to e7ece7
+    --- /home/deployer/.ssh/authorized_keys	2015-03-11 10:38:03.704902943 -0500
+    +++ /home/deployer/.ssh/.authorized_keys20150311-10594-1pl372m	2015-03-11 10:38:03.700902847 -0500
+    @@ -1 +1,2 @@
+    +ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTMI73eewBz1trni3M+FgTBHgdoFBwiUp53UgfbJQMCJ3JBDiLHjztpij7FaHxzo0DSQih2UAACXK9gXHpoqZbGn4JPzx/2m3K7Yitsz4rgUWiSld3X38p/Y3wAaPaoO7IlnLDtq/0O9xYJC4pCt9bDOlo87kyTCeCIoWsu4dp/wbWU+nA34MGv/6VwHJMRenqGZnvFZ7VRJdYBx3JUkxb0U97aFoh8P9mlzw49SM7ETSZ+Jvhw07IF4tFTpwZW69ZonNwfTw+wCaex9zUdovgAaRoTmpvVdyzctcSB7rqYqJh8jPjz4FfZpkG98aJjgjIGeZdS9UIbH7Bk7a1QTOL root@chef-book
     - change mode from '' to '0600'
     - change owner from '' to 'deployer'
     - change group from '' to 'deployer'
 
-
 Running handlers:
 Running handlers complete
-
-Chef Client finished, 4/11 resources updated in 1.430636575 seconds
+Chef Client finished, 4/11 resources updated in 6.403209094 seconds
 root@chef-book:~/core#
 ```
 
@@ -635,20 +646,13 @@ Now let's test this out.
 
 ```bash
 root@chef-book:~/core# ssh deployer@localhost
-Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-23-generic x86_64)
-
- * Documentation:  https://help.ubuntu.com/
-Welcome to your Vagrant-built virtual machine.
-
-The programs included with the Ubuntu system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-applicable law.
-
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is 05:4d:8d:e9:ae:da:3f:ce:a8:69:cc:0e:50:b8:6d:2a.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
 deployer@chef-book:~$
 ```
+
 Badass! Now you can create a default deployer user and change things around as needed. This will be much more useful later on in the book when we start spinning machines up in the "cloud".
 
 Move on to 
