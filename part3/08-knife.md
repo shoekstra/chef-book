@@ -87,7 +87,7 @@ cookbook_license         "apachev2"
 cookbook_email           "jj.asghar@peopleadmin.com"
 ```
 
-So this is just an example, but it will be useful when we move on to the chef-server and knife plugins. The most important of these are probably `log_level` (how much data you want to see), `log_location` (where to log it), `cookbook_path` (the path to your cookbooks), and the `cookbook_[copyright|licence|email]` (because if you fill them out here you want need to do it for `knife cookbook create`).
+So this is just an example, but it will be useful when we move on to the chef-server and knife plugins. The most important of these are probably `log_level` (how much data you want to see), `log_location` (where to log it), `cookbook_path` (the path to your cookbooks), and the `cookbook_[copyright|licence|email]` (because if you fill them out here you won't need to do it for `knife cookbook create`).
 
 So let's talk about `knife cookbook create`. Originally you created a simple cookbook by making the directories and adding the files manually. Good ol' `knife` creates that foundation for you. As an example:
 
