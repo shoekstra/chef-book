@@ -58,66 +58,80 @@ Next you'll need to open up the `Vagrantfile` and add the run_list to it so chef
 ```ruby
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-$script = <<SCRIPT
-apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-apt-get install git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev -y
 
-echo "America/Chicago" > /etc/timezone # because this is the timezone where I live ;)
-dpkg-reconfigure -f noninteractive tzdata
-if ! [ -a /etc/chef/client.pem ]; then
-  curl -L https://www.opscode.com/chef/install.sh | sudo bash
-fi
-ntpdate tick.uh.edu
-SCRIPT
-
-Vagrant.configure("2") do |config|
-  config.vm.box = "chef-book"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
   config.vm.host_name = 'chef-book'
-  #config.vm.provision :shell, :inline => $script
+
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   sudo apt-get update
+  #   sudo apt-get install git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev -y
+  #
+  #   sudo sed -i '/pam_motd.so/d' /etc/pam.d/sshd
+  #   sudo echo "America/Chicago" > /etc/timezone # because this is the timezone where I live ;)
+  #   sudo dpkg-reconfigure -f noninteractive tzdata
+  #   sudo touch /var/lib/cloud/instance/locale-check.skip
+  #
+  #   if ! [ -x /usr/bin/chef ]; then
+  #     cd /tmp
+  #     rm -rf *deb*
+  #     wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.4.0-1_amd64.deb
+  #     sudo dpkg -i chefdk_0.4.0-1_amd64.deb
+  #   fi
+  # SHELL
+
   config.vm.provision "chef_solo" do |chef|
     chef.add_recipe "base"
   end
 end
-
-
 ```
 
-Notice I commented out the `:shell` provisioning and added the `chef_solo` provisioner. Save this, exit the editor, and run `vagrant halt` then `vagrant up` and if needed `vagrant provision` and you should see something like this:
+Notice I commented out the `:shell` provisioning and added the `chef_solo` provisioner. Save this, exit the editor, and run `vagrant reload` then `vagrant provision` and you should see something like this:
 
 ```bash
-[~/vagrant/chef-book] % vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-[default] Clearing any previously set forwarded ports...
-[default] Creating shared folders metadata...
-[default] Clearing any previously set network interfaces...
-[default] Preparing network interfaces based on configuration...
-[default] Forwarding ports...
-[default] -- 22 => 2222 (adapter 1)
-[default] Booting VM...
-[default] Waiting for machine to boot. This may take a few minutes...
-[default] Machine booted and ready!
-[default] Setting hostname...
-[default] Mounting shared folders...
-[default] -- /vagrant
-[default] -- /tmp/vagrant-chef-1/chef-solo-1/cookbooks
+[~/vagrant/chef-book] % vagrant reload
+==> default: Attempting graceful shutdown of VM...
+==> default: Checking if box 'ubuntu/trusty64' is up to date...
+==> default: Clearing any previously set forwarded ports...
+==> default: Fixed port collision for 22 => 2222. Now on port 2201.
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+==> default: Forwarding ports...
+    default: 22 => 2201 (adapter 1)
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2201
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default: Warning: Connection timeout. Retrying...
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+==> default: Setting hostname...
+==> default: Mounting shared folders...
+    default: /vagrant => ~/vagrant/chef-book
+    default: /tmp/vagrant-chef/a4beeb7413868f480c1b0e1a026865d3/cookbooks => ~/vagrant/chef-book/cookbooks
+==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+==> default: to force provisioning. Provisioners marked to run always will still run.
 [~/vagrant/chef-book] % vagrant provision
-[default] Running provisioner: chef_solo...
+==> default: Running provisioner: chef_solo...
+==> default: Detected Chef (latest) is already installed
 Generating chef JSON and uploading...
-Running chef-solo...
-stdin: is not a tty
-[2013-10-22T15:17:25-05:00] INFO: Forking chef instance to converge...
-[2013-10-22T15:17:25-05:00] INFO: *** Chef 11.6.2 ***
-[2013-10-22T15:17:26-05:00] INFO: Setting the run_list to ["recipe[base::default]"] from JSON
-[2013-10-22T15:17:26-05:00] INFO: Run List is [recipe[base::default]]
-[2013-10-22T15:17:26-05:00] INFO: Run List expands to [base::default]
-[2013-10-22T15:17:26-05:00] INFO: Starting Chef Run for chef-book
-[2013-10-22T15:17:26-05:00] INFO: Running start handlers
-[2013-10-22T15:17:26-05:00] INFO: Start handlers complete.
-[2013-10-22T15:17:26-05:00] INFO: Chef Run complete in 0.48791292 seconds
-[2013-10-22T15:17:26-05:00] INFO: Running report handlers
-[2013-10-22T15:17:26-05:00] INFO: Report handlers complete
+==> default: Running chef-solo...
+==> default: stdin: is not a tty
+==> default: [2015-03-11T10:49:42-05:00] INFO: Forking chef instance to converge...
+==> default: [2015-03-11T10:49:42-05:00] INFO: *** Chef 12.1.1 ***
+==> default: [2015-03-11T10:49:42-05:00] INFO: Chef-client pid: 1447
+==> default: [2015-03-11T10:49:48-05:00] INFO: Setting the run_list to ["recipe[base]"] from CLI options
+==> default: [2015-03-11T10:49:48-05:00] INFO: Run List is [recipe[base]]
+==> default: [2015-03-11T10:49:48-05:00] INFO: Run List expands to [base]
+==> default: [2015-03-11T10:49:48-05:00] INFO: Starting Chef Run for chef-book
+==> default: [2015-03-11T10:49:48-05:00] INFO: Running start handlers
+==> default: [2015-03-11T10:49:48-05:00] INFO: Start handlers complete.
+==> default: [2015-03-11T10:49:48-05:00] INFO: Chef Run complete in 0.13778329 seconds
+==> default: [2015-03-11T10:49:48-05:00] INFO: Skipping removal of unused files from the cache
+==> default: [2015-03-11T10:49:48-05:00] INFO: Running report handlers
+==> default: [2015-03-11T10:49:48-05:00] INFO: Report handlers complete
 [~/vagrant/chef-book] %
 ```
 
