@@ -7,10 +7,12 @@ Before we go any further, there is a quote that you always need to keep in your 
 
 Please take that to heart; I have many times screwed up a `knife` command and caused significant pain.
 
+* NOTE: we won't `sudo su -` all the time from now on, so pay attention to the prompt. If the prompt ends with $ you should not sudo when running the command, if the prompt ends with # you should sudo before running the command.
+
 So let's make sure you have knife. Initally we'll start in the chef-book vm, and move on from there. Type the following:
 
 ```bash
-root@chef-book:~# knife
+root@chef-book:~$ knife
 ERROR: You need to pass a sub-command (e.g., knife SUB-COMMAND)
 
 Usage: knife sub-command (options)
@@ -67,9 +69,8 @@ knife.rb
 The [knife.rb](http://docs.opscode.com/config_rb_knife.html) file is the configuration file for using `knife`. Apropos, right? Lets start setting one up. If you clicked on the link you'll see that there are a good number of options, but we'll go through the basic configurations you should set. By the way, let's start doing this in the chef-book VM, but you could easily do the same configuration on a Mac/Linux box too.
 
 ```bash
-root@chef-book:~# mkdir .chef
-root@chef-book:~# touch .chef/knife.rb
-root@chef-book:~# vim .chef/knife.rb
+root@chef-book:~$ mkdir .chef
+root@chef-book:~$ vim .chef/knife.rb
 ```
 
 ```ruby
@@ -92,14 +93,14 @@ So this is just an example, but it will be useful when we move on to the chef-se
 So let's talk about `knife cookbook create`. Originally you created a simple cookbook by making the directories and adding the files manually. Good ol' `knife` creates that foundation for you. As an example:
 
 ```bash
-root@chef-book:~# mkdir cookbooks
-root@chef-book:~# cd cookbooks/
-root@chef-book:~/cookbooks# knife cookbook create new_cookbook
+root@chef-book:~$ mkdir cookbooks
+root@chef-book:~$ cd cookbooks/
+root@chef-book:~/cookbooks$ knife cookbook create new_cookbook
 ** Creating cookbook new_cookbook
 ** Creating README for cookbook: new_cookbook
 ** Creating CHANGELOG for cookbook: new_cookbook
 ** Creating metadata for cookbook: new_cookbook
-root@chef-book:~/cookbooks# find new_cookbook/
+root@chef-book:~/cookbooks$ find new_cookbook/
 new_cookbook/
 new_cookbook/recipes
 new_cookbook/recipes/default.rb
@@ -115,7 +116,7 @@ new_cookbook/resources
 new_cookbook/libraries
 new_cookbook/templates
 new_cookbook/templates/default
-root@chef-book:~/cookbooks#
+root@chef-book:~/cookbooks$
 ```
 
 As you can see, you have your `recipes/default.rb` and your `files/default/` directory. Laziness wins out! Oh, I should mention you didn't have to run `knife cookbook create new_cookbook` from the `~/cookbooks` directory (since we set the `cookbook_path` in our `knife.rb`). I just did it so I could run `find new_cookbook/` for the demonstration.
