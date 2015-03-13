@@ -20,18 +20,18 @@ Let's run chef-zero:
 
 ```bash
 root@chef-book:~# chef-client -z
-[2015-03-10T10:00:13-05:00] WARN: No config file found or specified on command line, using command line options.
-[2015-03-10T10:00:13-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
+[2015-03-13T09:09:44-05:00] WARN: No config file found or specified on command line, using command line options.
+[2015-03-13T09:09:44-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
 Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: []
 Synchronizing Cookbooks:
 Compiling Cookbooks...
-[2015-03-10T10:00:19-05:00] WARN: Node chef-book has an empty run list.
+[2015-03-13T09:09:51-05:00] WARN: Node chef-book has an empty run list.
 Converging 0 resources
 
 Running handlers:
 Running handlers complete
-Chef Client finished, 0/0 resources updated in 6.157297261 seconds
+Chef Client finished, 0/0 resources updated in 6.464789358 seconds
 root@chef-book:~#
 ```
 
