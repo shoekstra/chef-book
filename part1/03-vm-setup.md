@@ -9,13 +9,16 @@ I have a `Vagrantfile` here that I'm going to use as a base for this book.
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+chefdk = 'chefdk_0.4.0-1_amd64.deb'
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.host_name = 'chef-book'
 
   config.vm.provision "shell", inline: <<-SHELL
-    sudo apt-get update
-    sudo apt-get install git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev -y
+    echo "Adding brightbox PPA ..." && sudo add-apt-repository -y ppa:brightbox/ruby-ng > /dev/null
+    echo "Updating repositories ... " && sudo apt-get -qq update
+    echo "Installing some packages ..." && sudo apt-get install -qq -y git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev ruby2.1 ruby2.1-dev
 
     sudo sed -i '/pam_motd.so/d' /etc/pam.d/sshd
     sudo echo "America/Chicago" > /etc/timezone # because this is the timezone where I live ;)
@@ -25,8 +28,9 @@ Vagrant.configure(2) do |config|
     if ! [ -x /usr/bin/chef ]; then
       cd /tmp
       rm -rf *deb*
-      wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.4.0-1_amd64.deb
-      sudo dpkg -i chefdk_0.4.0-1_amd64.deb
+      echo "Downloading #{chefdk} ..."
+      wget -nv "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/#{chefdk}"
+      sudo dpkg -i "#{chefdk}"
     fi
   SHELL
 end
