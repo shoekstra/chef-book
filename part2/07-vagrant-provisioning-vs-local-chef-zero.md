@@ -59,24 +59,32 @@ Next you'll need to open up the `Vagrantfile` and add the run_list to it so chef
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+chefdk = 'chefdk_0.4.0-1_amd64.deb'
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.host_name = 'chef-book'
 
   # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev -y
+  #   echo "Adding brightbox PPA ..."
+  #   sudo add-apt-repository -y ppa:brightbox/ruby-ng > /dev/null 2>&1
+  #   echo "Updating repositories ... "
+  #   sudo apt-get -qq update > /dev/null 2>&1
+  #   echo "Installing some packages ..."
+  #   sudo apt-get install -qq -y git-core curl build-essential zlib1g-dev libssl-dev libreadline6-dev libyaml-dev ruby2.1 ruby2.1-dev > /dev/null 2>&1
   #
-  #   sudo sed -i '/pam_motd.so/d' /etc/pam.d/sshd
   #   sudo echo "America/Chicago" > /etc/timezone # because this is the timezone where I live ;)
   #   sudo dpkg-reconfigure -f noninteractive tzdata
+  #
+  #   sudo sed -i '/pam_motd.so/d' /etc/pam.d/sshd
   #   sudo touch /var/lib/cloud/instance/locale-check.skip
   #
   #   if ! [ -x /usr/bin/chef ]; then
   #     cd /tmp
   #     rm -rf *deb*
-  #     wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.4.0-1_amd64.deb
-  #     sudo dpkg -i chefdk_0.4.0-1_amd64.deb
+  #     echo "Downloading #{chefdk} ..."
+  #     wget -nv "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/#{chefdk}"
+  #     sudo dpkg -i "#{chefdk}"
   #   fi
   # SHELL
 
@@ -115,23 +123,23 @@ Notice I commented out the `:shell` provisioning and added the `chef_solo` provi
 ==> default: to force provisioning. Provisioners marked to run always will still run.
 [~/vagrant/chef-book] % vagrant provision
 ==> default: Running provisioner: chef_solo...
-==> default: Detected Chef (latest) is already installed
+    default: Installing Chef (latest)...
 Generating chef JSON and uploading...
 ==> default: Running chef-solo...
 ==> default: stdin: is not a tty
-==> default: [2015-03-11T10:49:42-05:00] INFO: Forking chef instance to converge...
-==> default: [2015-03-11T10:49:42-05:00] INFO: *** Chef 12.1.1 ***
-==> default: [2015-03-11T10:49:42-05:00] INFO: Chef-client pid: 1447
-==> default: [2015-03-11T10:49:48-05:00] INFO: Setting the run_list to ["recipe[base]"] from CLI options
-==> default: [2015-03-11T10:49:48-05:00] INFO: Run List is [recipe[base]]
-==> default: [2015-03-11T10:49:48-05:00] INFO: Run List expands to [base]
-==> default: [2015-03-11T10:49:48-05:00] INFO: Starting Chef Run for chef-book
-==> default: [2015-03-11T10:49:48-05:00] INFO: Running start handlers
-==> default: [2015-03-11T10:49:48-05:00] INFO: Start handlers complete.
-==> default: [2015-03-11T10:49:48-05:00] INFO: Chef Run complete in 0.13778329 seconds
-==> default: [2015-03-11T10:49:48-05:00] INFO: Skipping removal of unused files from the cache
-==> default: [2015-03-11T10:49:48-05:00] INFO: Running report handlers
-==> default: [2015-03-11T10:49:48-05:00] INFO: Report handlers complete
+==> default: [2015-03-13T09:29:52-05:00] INFO: Forking chef instance to converge...
+==> default: [2015-03-13T09:29:52-05:00] INFO: *** Chef 12.1.1 ***
+==> default: [2015-03-13T09:29:52-05:00] INFO: Chef-client pid: 1903
+==> default: [2015-03-13T09:29:58-05:00] INFO: Setting the run_list to ["recipe[base]"] from CLI options
+==> default: [2015-03-13T09:29:58-05:00] INFO: Run List is [recipe[base]]
+==> default: [2015-03-13T09:29:58-05:00] INFO: Run List expands to [base]
+==> default: [2015-03-13T09:29:58-05:00] INFO: Starting Chef Run for chef-book
+==> default: [2015-03-13T09:29:58-05:00] INFO: Running start handlers
+==> default: [2015-03-13T09:29:58-05:00] INFO: Start handlers complete.
+==> default: [2015-03-13T09:29:58-05:00] INFO: Chef Run complete in 0.239408252 seconds
+==> default: [2015-03-13T09:29:58-05:00] INFO: Skipping removal of unused files from the cache
+==> default: [2015-03-13T09:29:58-05:00] INFO: Running report handlers
+==> default: [2015-03-13T09:29:58-05:00] INFO: Report handlers complete
 [~/vagrant/chef-book] %
 ```
 
