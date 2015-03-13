@@ -33,25 +33,25 @@ Save that file, and now run `chef-client`:
 
 ```bash
 root@chef-book:~# chef-client -z whatever.rb
-[2015-03-11T08:33:53-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
+[2015-03-13T09:10:57-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
 Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: []
 Synchronizing Cookbooks:
 Compiling Cookbooks...
-[2015-03-11T08:33:59-05:00] WARN: Node chef-book has an empty run list.
+[2015-03-13T09:11:03-05:00] WARN: Node chef-book has an empty run list.
 Converging 1 resources
 Recipe: @recipe_files::/root/whatever.rb
   * file[/tmp/x.txt] action create
     - create new file /tmp/x.txt
     - update content in file /tmp/x.txt from none to b94d27
-    --- /tmp/x.txt	2015-03-11 08:33:59.425050806 -0500
-    +++ /tmp/.x.txt20150311-7341-64namr	2015-03-11 08:33:59.425050806 -0500
+    --- /tmp/x.txt	2015-03-13 09:11:03.364182686 -0500
+    +++ /tmp/.x.txt20150313-7186-1mjxr4c	2015-03-13 09:11:03.364182686 -0500
     @@ -1 +1,2 @@
     +hello world
 
 Running handlers:
 Running handlers complete
-Chef Client finished, 1/1 resources updated in 6.145760521 seconds
+Chef Client finished, 1/1 resources updated in 6.312101149 seconds
 ```
 
 Now you can verify that there's a new file, `/tmp/x.txt`.  
@@ -94,8 +94,8 @@ Go ahead and run `chmod +x converge.sh` to make it executable, then run it.
 ```bash
 root@chef-book:~/core# chmod +x converge.sh
 root@chef-book:~/core# ./converge.sh
-[2015-03-11T08:35:25-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
-[2015-03-11T08:35:25-05:00] FATAL: Cannot load configuration from core.json
+[2015-03-13T09:11:55-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
+[2015-03-13T09:11:55-05:00] FATAL: Cannot load configuration from core.json
 root@chef-book:~#
 ```
 
@@ -120,8 +120,7 @@ Go ahead and run `./converge.sh` again, the output should be different:
 
 ```bash
 root@chef-book:~/core# ./converge.sh
-root@chef-book:~/core# ./converge.sh
-[2015-03-11T08:38:57-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
+[2015-03-13T09:13:08-05:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root/core.
 Starting Chef Client, version 12.0.3
 resolving cookbooks for run list: ["base::default"]
 
@@ -139,14 +138,14 @@ Expanded Run List:
 
 
 Running handlers:
-[2015-03-11T08:39:03-05:00] ERROR: Running exception handlers
+[2015-03-13T09:13:14-05:00] ERROR: Running exception handlers
 Running handlers complete
-[2015-03-11T08:39:03-05:00] ERROR: Exception handlers complete
-[2015-03-11T08:39:03-05:00] FATAL: Stacktrace dumped to /root/.chef/local-mode-cache/cache/chef-stacktrace.out
-Chef Client failed. 0 resources updated in 6.144336674 seconds
-[2015-03-11T08:39:03-05:00] ERROR: undefined method `cheffish' for nil:NilClass
-[2015-03-11T08:39:05-05:00] FATAL: Chef::Exceptions::ChildConvergeError: Chef run process exited unsuccessfully (exit code 1)
-
+[2015-03-13T09:13:14-05:00] ERROR: Exception handlers complete
+[2015-03-13T09:13:14-05:00] FATAL: Stacktrace dumped to /root/.chef/local-mode-cache/cache/chef-stacktrace.out
+Chef Client failed. 0 resources updated in 6.22291079 seconds
+[2015-03-13T09:13:14-05:00] ERROR: undefined method `cheffish' for nil:NilClass
+[2015-03-13T09:13:16-05:00] FATAL: Chef::Exceptions::ChildConvergeError: Chef run process exited unsuccessfully (exit code 1)
+root@chef-book:~/core#
 ```
 
 The bit that should that stand out is:
@@ -189,20 +188,14 @@ Now logically this will install `vim` right? Yep, and we're about to see that.
 To ensure this test works, let's uninstall vim from our vagrant box first:
 
 ```bash
-root@chef-book:~/core/cookbooks/base/recipes# apt-get purge vim -y
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following packages will be REMOVED:
-  vim*
-0 upgraded, 0 newly installed, 1 to remove and 0 not upgraded.
-After this operation, 2,237 kB disk space will be freed.
-(Reading database ... 106923 files and directories currently installed.)
+root@chef-book:~/core/cookbooks/base/recipes# apt-get -y -qq purge vim
+(Reading database ... 108024 files and directories currently installed.)
 Removing vim (2:7.4.052-1ubuntu3) ...
 update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/vi (vi) in auto mode
 update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/view (view) in auto mode
 update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/ex (ex) in auto mode
 update-alternatives: using /usr/bin/vim.tiny to provide /usr/bin/rview (rview) in auto mode
+root@chef-book:~/core/cookbooks/base/recipes#
 ```
 
 Go ahead and go up to `~/core`, and run `./converge.sh`, 
@@ -223,7 +216,7 @@ Recipe: base::default
 
 Running handlers:
 Running handlers complete
-Chef Client finished, 1/1 resources updated in 12.153926566 seconds
+Chef Client finished, 1/1 resources updated in 6.989714842 seconds
 root@chef-book:~/core#
 ```
 
@@ -313,7 +306,6 @@ Chef Trifecta
 If you looked at the cheat sheet above you would have seen:
 
 ```puppet
-
 package { 'openssh-server':
  ensure => installed,
 }
@@ -326,6 +318,7 @@ file { '/etc/ssh/ssh_config':
  notify  => Service['sshd'], # sshd will restart whenever you edit this file.
  require => Package['openssh-server'],
 }
+
 service { 'sshd':
  ensure     => running,
  enable     => true,
@@ -437,7 +430,7 @@ Recipe: base::ssh
 
 Running handlers:
 Running handlers complete
-Chef Client finished, 2/8 resources updated in 6.442284201 seconds
+Chef Client finished, 2/8 resources updated in 6.484312866 seconds
 ```
 
 Ok, so let's take this one step farther. Go ahead and open up `cookbooks/base/files/default/ssh_config` and put a comment at the top of the file. Diff the source file in the cookbook with the real file on disk.
@@ -445,15 +438,15 @@ Ok, so let's take this one step farther. Go ahead and open up `cookbooks/base/fi
 ```bash
 root@chef-book:~/core# vim cookbooks/base/files/default/ssh_config
 root@chef-book:~/core# diff -u /etc/ssh/ssh_config cookbooks/base/files/default/ssh_config
---- /etc/ssh/ssh_config 2012-04-02 06:48:45.000000000 -0500
-+++ cookbooks/base/files/default/ssh_config 2013-10-22 14:29:22.561680067 -0500
+--- /etc/ssh/ssh_config	2014-05-12 11:04:32.000000000 -0500
++++ cookbooks/base/files/default/ssh_config	2015-03-13 09:21:06.004158399 -0500
 @@ -1,4 +1,4 @@
 -
 +# this is a comment i added at the top
  # This is the ssh client system-wide configuration file.  See
  # ssh_config(5) for more information.  This file provides defaults for
  # users, and the values can be changed in per-user configuration files
-root@chef-book:~/core#
+ root@chef-book:~/core#
 ```
 
 Go ahead and run the `./converge.sh` again. You should see no difference now.
@@ -628,10 +621,10 @@ Recipe: base::deployer
   * cookbook_file[/home/deployer/.ssh/authorized_keys] action create_if_missing
     - create new file /home/deployer/.ssh/authorized_keys
     - update content in file /home/deployer/.ssh/authorized_keys from none to e7ece7
-    --- /home/deployer/.ssh/authorized_keys	2015-03-11 10:38:03.704902943 -0500
-    +++ /home/deployer/.ssh/.authorized_keys20150311-10594-1pl372m	2015-03-11 10:38:03.700902847 -0500
+    --- /home/deployer/.ssh/authorized_keys	2015-03-13 09:25:02.572725706 -0500
+    +++ /home/deployer/.ssh/.authorized_keys20150313-10293-piulsx	2015-03-13 09:25:02.572725706 -0500
     @@ -1 +1,2 @@
-    +ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCTMI73eewBz1trni3M+FgTBHgdoFBwiUp53UgfbJQMCJ3JBDiLHjztpij7FaHxzo0DSQih2UAACXK9gXHpoqZbGn4JPzx/2m3K7Yitsz4rgUWiSld3X38p/Y3wAaPaoO7IlnLDtq/0O9xYJC4pCt9bDOlo87kyTCeCIoWsu4dp/wbWU+nA34MGv/6VwHJMRenqGZnvFZ7VRJdYBx3JUkxb0U97aFoh8P9mlzw49SM7ETSZ+Jvhw07IF4tFTpwZW69ZonNwfTw+wCaex9zUdovgAaRoTmpvVdyzctcSB7rqYqJh8jPjz4FfZpkG98aJjgjIGeZdS9UIbH7Bk7a1QTOL root@chef-book
+    +ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDZZo88bmSvVm9hBi6BDTkBBju8zQVsuUUumDP40YLQSgLLOnRzKaSXos8WMmSfzF4w9crGARfa7VsbZbV8zHtBSDsk0wMl9USfcp4zxUScFeOvpkSa6eS4TtQQahGz0uzhQyroi09a9kFq6NY6QqQXvWoAeaaDHUZgIvT1xPBAJLC5Wk9kTLw6Fx2moubb0l0fYciSP2cwehSCPKcZdyDPmBW5REnrhqa9DuJtKPP0P2ojssFANNnmaTq2u3c0WqIVSxVAwZLqTFh8CGwnzyxckz2kG+6/2QZ85gXjysLaXnyCRhSAs/fu3N6Dg370rSjZtpbg/X/miu1ihVQT3S79 root@chef-book
     - change mode from '' to '0600'
     - change owner from '' to 'deployer'
     - change group from '' to 'deployer'
