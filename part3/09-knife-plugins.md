@@ -19,43 +19,95 @@ So [knife solo](http://matschaffer.github.io/knife-solo/) as I say above is a po
 First thing first, installation. You can either add it to a Gemfile, or in my case I like just using 'gem install knife-solo`.  Notice the "-" between the name. You should see something like this:
 
 ```bash
-root@chef-book:~# gem install knife-solo
-Fetching: mixlib-config-1.1.2.gem (100%)
-Successfully installed mixlib-config-1.1.2
-Fetching: mixlib-cli-1.3.0.gem (100%)
-Successfully installed mixlib-cli-1.3.0
+vagrant@chef-book:~/cookbooks$ sudo gem install knife-solo
+Fetching: net-ssh-2.9.3.beta1.gem (100%)
+Successfully installed net-ssh-2.9.3.beta1
+Fetching: net-scp-1.2.1.gem (100%)
+Successfully installed net-scp-1.2.1
+Fetching: specinfra-2.19.4.gem (100%)
+Successfully installed specinfra-2.19.4
+Fetching: multi_json-1.11.0.gem (100%)
+Successfully installed multi_json-1.11.0
+Fetching: diff-lcs-1.2.5.gem (100%)
+Successfully installed diff-lcs-1.2.5
+Fetching: rspec-support-3.2.2.gem (100%)
+Successfully installed rspec-support-3.2.2
+Fetching: rspec-expectations-3.2.0.gem (100%)
+Successfully installed rspec-expectations-3.2.0
+Fetching: rspec-core-3.2.2.gem (100%)
+Successfully installed rspec-core-3.2.2
+Fetching: rspec-its-1.2.0.gem (100%)
+Successfully installed rspec-its-1.2.0
+Fetching: rspec-mocks-3.2.1.gem (100%)
+Successfully installed rspec-mocks-3.2.1
+Fetching: rspec-3.2.0.gem (100%)
+Successfully installed rspec-3.2.0
+Fetching: serverspec-2.10.1.gem (100%)
+Successfully installed serverspec-2.10.1
+Fetching: builder-3.2.2.gem (100%)
+Successfully installed builder-3.2.2
+Fetching: rspec_junit_formatter-0.2.0.gem (100%)
+Successfully installed rspec_junit_formatter-0.2.0
+Fetching: plist-3.1.0.gem (100%)
+Successfully installed plist-3.1.0
+Fetching: method_source-0.8.2.gem (100%)
+Successfully installed method_source-0.8.2
+Fetching: slop-3.6.0.gem (100%)
+Successfully installed slop-3.6.0
+Fetching: coderay-1.1.0.gem (100%)
+Successfully installed coderay-1.1.0
+Fetching: pry-0.10.1.gem (100%)
+Successfully installed pry-0.10.1
+Fetching: rack-1.6.0.gem (100%)
+Successfully installed rack-1.6.0
+Fetching: libyajl2-1.2.0.gem (100%)
+Building native extensions.  This could take a while...
+Successfully installed libyajl2-1.2.0
+Fetching: ffi-1.9.6.gem (100%)
+Building native extensions.  This could take a while...
+Successfully installed ffi-1.9.6
+Fetching: ffi-yajl-1.4.0.gem (100%)
+Building native extensions.  This could take a while...
+Successfully installed ffi-yajl-1.4.0
+Fetching: uuidtools-2.1.5.gem (100%)
+Successfully installed uuidtools-2.1.5
+Fetching: hashie-2.1.2.gem (100%)
+Successfully installed hashie-2.1.2
 Fetching: mixlib-log-1.6.0.gem (100%)
 Successfully installed mixlib-log-1.6.0
-Fetching: mixlib-authentication-1.3.0.gem (100%)
-Successfully installed mixlib-authentication-1.3.0
-Fetching: mixlib-shellout-1.2.0.gem (100%)
-Successfully installed mixlib-shellout-1.2.0
-Fetching: systemu-2.5.2.gem (100%)
-Successfully installed systemu-2.5.2
-Fetching: yajl-ruby-1.1.0.gem (100%)
-Building native extensions.  This could take a while...
-Successfully installed yajl-ruby-1.1.0
-Fetching: ipaddress-0.8.0.gem (100%)
-Successfully installed ipaddress-0.8.0
-Fetching: ohai-6.18.0.gem (100%)
-Successfully installed ohai-6.18.0
-Fetching: mime-types-1.25.gem (100%)
-Successfully installed mime-types-1.25
-Fetching: rest-client-1.6.7.gem (100%)
-Successfully installed rest-client-1.6.7
-Fetching: net-ssh-2.7.0.gem (100%)
-Successfully installed net-ssh-2.7.0
-Fetching: net-ssh-gateway-1.2.0.gem (100%)
-Successfully installed net-ssh-gateway-1.2.0
-Fetching: net-ssh-multi-1.1.gem (100%)
-Successfully installed net-ssh-multi-1.1
-Fetching: highline-1.6.20.gem (100%)
-Successfully installed highline-1.6.20
+Fetching: chef-zero-4.0.gem (100%)
+Successfully installed chef-zero-4.0
 Fetching: erubis-2.7.0.gem (100%)
 Successfully installed erubis-2.7.0
-Fetching: chef-11.6.2.gem (100%)
-Successfully installed chef-11.6.2
-Fetching: knife-solo-0.3.0.gem (100%)
+Fetching: highline-1.7.1.gem (100%)
+Successfully installed highline-1.7.1
+Fetching: net-ssh-gateway-1.2.0.gem (100%)
+Successfully installed net-ssh-gateway-1.2.0
+Fetching: net-ssh-multi-1.2.0.gem (100%)
+Successfully installed net-ssh-multi-1.2.0
+Fetching: wmi-lite-1.0.0.gem (100%)
+Successfully installed wmi-lite-1.0.0
+Fetching: ipaddress-0.8.0.gem (100%)
+Successfully installed ipaddress-0.8.0
+Fetching: net-dhcp-1.3.2.gem (100%)
+Successfully installed net-dhcp-1.3.2
+Fetching: mixlib-shellout-2.0.1.gem (100%)
+Successfully installed mixlib-shellout-2.0.1
+Fetching: mixlib-config-2.1.0.gem (100%)
+Successfully installed mixlib-config-2.1.0
+Fetching: mixlib-cli-1.5.0.gem (100%)
+Successfully installed mixlib-cli-1.5.0
+Fetching: systemu-2.6.4.gem (100%)
+Successfully installed systemu-2.6.4
+Fetching: mime-types-2.4.3.gem (100%)
+Successfully installed mime-types-2.4.3
+Fetching: ohai-8.1.1.gem (100%)
+Successfully installed ohai-8.1.1
+Fetching: mixlib-authentication-1.3.0.gem (100%)
+Successfully installed mixlib-authentication-1.3.0
+Fetching: chef-12.1.1.gem (100%)
+Successfully installed chef-12.1.1
+Fetching: knife-solo-0.4.2.gem (100%)
 Thanks for installing knife-solo!
 
 If you run into any issues please let us know at:
@@ -66,46 +118,99 @@ running `gem clean knife-solo` to avoid any errors.
 
 See http://bit.ly/CHEF-3255 for more information on the knife bug
 that causes this.
-Successfully installed knife-solo-0.3.0
-Parsing documentation for mixlib-config-1.1.2
-Installing ri documentation for mixlib-config-1.1.2
-Parsing documentation for mixlib-cli-1.3.0
-Installing ri documentation for mixlib-cli-1.3.0
-Parsing documentation for mixlib-log-1.6.0
-Installing ri documentation for mixlib-log-1.6.0
-Parsing documentation for mixlib-authentication-1.3.0
-Installing ri documentation for mixlib-authentication-1.3.0
-Parsing documentation for mixlib-shellout-1.2.0
-Installing ri documentation for mixlib-shellout-1.2.0
-Parsing documentation for systemu-2.5.2
-Installing ri documentation for systemu-2.5.2
-Parsing documentation for yajl-ruby-1.1.0
-unable to convert "\xAF" from ASCII-8BIT to UTF-8 for lib/yajl/yajl.so, skipping
-Installing ri documentation for yajl-ruby-1.1.0
-Parsing documentation for ipaddress-0.8.0
-Installing ri documentation for ipaddress-0.8.0
-Parsing documentation for ohai-6.18.0
-Installing ri documentation for ohai-6.18.0
-Parsing documentation for mime-types-1.25
-Installing ri documentation for mime-types-1.25
-Parsing documentation for rest-client-1.6.7
-Installing ri documentation for rest-client-1.6.7
-Parsing documentation for net-ssh-2.7.0
-Installing ri documentation for net-ssh-2.7.0
-Parsing documentation for net-ssh-gateway-1.2.0
-Installing ri documentation for net-ssh-gateway-1.2.0
-Parsing documentation for net-ssh-multi-1.1
-Installing ri documentation for net-ssh-multi-1.1
-Parsing documentation for highline-1.6.20
-Installing ri documentation for highline-1.6.20
+Successfully installed knife-solo-0.4.2
+Parsing documentation for builder-3.2.2
+Installing ri documentation for builder-3.2.2
+Parsing documentation for chef-12.1.1
+Installing ri documentation for chef-12.1.1
+Parsing documentation for chef-zero-4.0
+Installing ri documentation for chef-zero-4.0
+invalid options: -SNw2
+(invalid options are ignored)
+Parsing documentation for coderay-1.1.0
+Installing ri documentation for coderay-1.1.0
+Parsing documentation for diff-lcs-1.2.5
+Installing ri documentation for diff-lcs-1.2.5
 Parsing documentation for erubis-2.7.0
 Installing ri documentation for erubis-2.7.0
-Parsing documentation for chef-11.6.2
-Installing ri documentation for chef-11.6.2
-Parsing documentation for knife-solo-0.3.0
-Installing ri documentation for knife-solo-0.3.0
-Done installing documentation for mixlib-config, mixlib-cli, mixlib-log, mixlib-authentication, mixlib-shellout, systemu, yajl-ruby, ipaddress, ohai, mime-types, rest-client, net-ssh, net-ssh-gateway, net-ssh-multi, highline, erubis, chef, knife-solo (37 sec).
-18 gems installed
+Parsing documentation for ffi-1.9.6
+Installing ri documentation for ffi-1.9.6
+Parsing documentation for ffi-yajl-1.4.0
+Installing ri documentation for ffi-yajl-1.4.0
+Parsing documentation for hashie-2.1.2
+Installing ri documentation for hashie-2.1.2
+Parsing documentation for highline-1.7.1
+Installing ri documentation for highline-1.7.1
+Parsing documentation for ipaddress-0.8.0
+Installing ri documentation for ipaddress-0.8.0
+Parsing documentation for knife-solo-0.4.2
+Installing ri documentation for knife-solo-0.4.2
+Parsing documentation for libyajl2-1.2.0
+Installing ri documentation for libyajl2-1.2.0
+Parsing documentation for method_source-0.8.2
+Installing ri documentation for method_source-0.8.2
+Parsing documentation for mime-types-2.4.3
+Installing ri documentation for mime-types-2.4.3
+Parsing documentation for mixlib-authentication-1.3.0
+Installing ri documentation for mixlib-authentication-1.3.0
+Parsing documentation for mixlib-cli-1.5.0
+Installing ri documentation for mixlib-cli-1.5.0
+Parsing documentation for mixlib-config-2.1.0
+Installing ri documentation for mixlib-config-2.1.0
+Parsing documentation for mixlib-log-1.6.0
+Installing ri documentation for mixlib-log-1.6.0
+Parsing documentation for mixlib-shellout-2.0.1
+Installing ri documentation for mixlib-shellout-2.0.1
+Parsing documentation for multi_json-1.11.0
+Installing ri documentation for multi_json-1.11.0
+Parsing documentation for net-dhcp-1.3.2
+unable to convert "\xDF" from ASCII-8BIT to UTF-8 for lib/net/dhcp/oui.txt, skipping
+Installing ri documentation for net-dhcp-1.3.2
+Parsing documentation for net-scp-1.2.1
+Installing ri documentation for net-scp-1.2.1
+Parsing documentation for net-ssh-2.9.3.beta1
+Installing ri documentation for net-ssh-2.9.3.beta1
+Parsing documentation for net-ssh-gateway-1.2.0
+Installing ri documentation for net-ssh-gateway-1.2.0
+Parsing documentation for net-ssh-multi-1.2.0
+Installing ri documentation for net-ssh-multi-1.2.0
+Parsing documentation for ohai-8.1.1
+Installing ri documentation for ohai-8.1.1
+Parsing documentation for plist-3.1.0
+Installing ri documentation for plist-3.1.0
+Parsing documentation for pry-0.10.1
+Installing ri documentation for pry-0.10.1
+Parsing documentation for rack-1.6.0
+Installing ri documentation for rack-1.6.0
+Parsing documentation for rspec-3.2.0
+Installing ri documentation for rspec-3.2.0
+Parsing documentation for rspec-core-3.2.2
+Installing ri documentation for rspec-core-3.2.2
+Parsing documentation for rspec-expectations-3.2.0
+Installing ri documentation for rspec-expectations-3.2.0
+Parsing documentation for rspec-its-1.2.0
+Installing ri documentation for rspec-its-1.2.0
+Parsing documentation for rspec-mocks-3.2.1
+Installing ri documentation for rspec-mocks-3.2.1
+Parsing documentation for rspec-support-3.2.2
+Installing ri documentation for rspec-support-3.2.2
+Parsing documentation for rspec_junit_formatter-0.2.0
+Installing ri documentation for rspec_junit_formatter-0.2.0
+Parsing documentation for serverspec-2.10.1
+Installing ri documentation for serverspec-2.10.1
+Parsing documentation for slop-3.6.0
+Installing ri documentation for slop-3.6.0
+Parsing documentation for specinfra-2.19.4
+Installing ri documentation for specinfra-2.19.4
+Parsing documentation for systemu-2.6.4
+Installing ri documentation for systemu-2.6.4
+Parsing documentation for uuidtools-2.1.5
+Installing ri documentation for uuidtools-2.1.5
+Parsing documentation for wmi-lite-1.0.0
+Installing ri documentation for wmi-lite-1.0.0
+Done installing documentation for builder, chef, chef-zero, coderay, diff-lcs, erubis, ffi, ffi-yajl, hashie, highline, ipaddress, knife-solo, libyajl2, method_source, mime-types, mixlib-authentication, mixlib-cli, mixlib-config, mixlib-log, mixlib-shellout, multi_json, net-dhcp, net-scp, net-ssh, net-ssh-gateway, net-ssh-multi, ohai, plist, pry, rack, rspec, rspec-core, rspec-expectations, rspec-its, rspec-mocks, rspec-support, rspec_junit_formatter, serverspec, slop, specinfra, systemu, uuidtools, wmi-lite after 51 seconds
+43 gems installed
+vagrant@chef-book:~/cookbooks$
 ```
 You can already leverage `knife solo` with the cookbook you created. Lets do that now. NOTE: this is a tad bit tricky with virtualbox, so bear with me.
 
@@ -130,49 +235,51 @@ mychefrepo/
 
 `knife solo bootstrap root@hostname`: combines the prepare and cook into one command. In theory you can have a `node/hostname.json` set up and run one command and provision a box exactly how you want. Pretty neat eh?
 
-So, lets actually do it.  Go to your `cookbooks` directory in the chef-book vm.
+So, lets actually do it.  Go to your `~/` and create a `knife_solo` directory you can play out of.
 
 ```bash
-root@chef-book:~# cd solo/
-root@chef-book:~/core# cd cookbooks/
-root@chef-book:~/core/cookbooks# ls
-base
-root@chef-book:~/core/cookbooks#
-```
-
-Great, now go ahead and go to your `~/` and create a `knife_solo` directory you can play out of.
-
-```bash
-root@chef-book:~/core/cookbooks# cd ~
-root@chef-book:~# mkdir knife_solo
-root@chef-book:~# cd knife_solo/
-root@chef-book:~/knife_solo#
+vagrant@chef-book:~/cookbooks$ cd ~
+vagrant@chef-book:~$ mkdir knife_solo
+vagrant@chef-book:~$ cd knife_solo/
+vagrant@chef-book:~/knife_solo$
 ```
 
 Now type the `knife solo init .` command to make it `knife solo`ized. 
 
 ```bash
-root@chef-book:~/knife_solo# knife solo init .
+vagrant@chef-book:~/knife_solo$ knife solo init .
 Creating kitchen...
 Creating knife.rb in kitchen...
 Creating cupboards...
-root@chef-book:~/knife_solo#
+vagrant@chef-book:~/knife_solo$
 ```
 
 Change directory into the `site-cookbook` directory.
 
 I'd like to take a quick moment to talk about the _two_ directories that are here. `cookbooks/` and `site-cookbooks/`, the `cookbook/` directory is for [berkshelf](http://berkshelf.com/) or [librarian](https://github.com/applicationsonline/librarian-chef) to put cookbooks before uploading them to your provisioning box. So remember that, `site-cookbooks/` is the place to put _your_ cookbooks that you want to upload. (If you do put them in `cookbooks/` it'll delete them after the run _and_ can't find them either, so it's a waste, don't bother.)
 
+Let's copy the cookbook we created earlier as the root user:
 ```bash
-root@chef-book:~/knife_solo# cd site-cookbooks/
-root@chef-book:~/knife_solo/site-cookbooks# cp -r ~/core/cookbooks/base/ ./
+vagrant@chef-book:~/knife_solo$ cd site-cookbooks/
+vagrant@chef-book:~/knife_solo/site-cookbooks$ sudo cp -rv /root/core/cookbooks/base/ ./
+'/root/core/cookbooks/base/' -> './base'
+'/root/core/cookbooks/base/files' -> './base/files'
+'/root/core/cookbooks/base/files/default' -> './base/files/default'
+'/root/core/cookbooks/base/files/default/deployer_key.pub' -> './base/files/default/deployer_key.pub'
+'/root/core/cookbooks/base/files/default/ssh_config' -> './base/files/default/ssh_config'
+'/root/core/cookbooks/base/recipes' -> './base/recipes'
+'/root/core/cookbooks/base/recipes/ssh.rb' -> './base/recipes/ssh.rb'
+'/root/core/cookbooks/base/recipes/deployer.rb' -> './base/recipes/deployer.rb'
+'/root/core/cookbooks/base/recipes/default.rb' -> './base/recipes/default.rb'
+vagrant@chef-book:~/knife_solo/site-cookbooks$ sudo chown -R vagrant.vagrant base/
+vagrant@chef-book:~/knife_solo/site-cookbooks$
 ```
 
 Great, now go up a directory to the `nodes/` directory, and create a file called `localhost.json`
 
 ```bash
-root@chef-book:~/knife_solo/site-cookbooks# cd ../nodes/
-root@chef-book:~/knife_solo/nodes# vim localhost.json
+vagrant@chef-book:~/knife_solo/site-cookbooks$ cd ../nodes/
+vagrant@chef-book:~/knife_solo/nodes$ vim localhost.json
 ```
 
 Add the save `core.json` file that you had from the chef-solo section.
@@ -183,58 +290,69 @@ Add the save `core.json` file that you had from the chef-solo section.
 }
 ```
 
-Just because I want to make sure this goes off without a hitch, go ahead and confirm your public key is in `.ssh/authorized_keys` for root as root. Yes, I realize that's confusing, but read the following commands to make sense of it:
+Just because I want to make sure this goes off without a hitch, we're going to copy the root user's public key into it's `.ssh/authorized_keys` file and copy it's private key to our `.ssh` directory. Yes, I realize that's confusing, but read the following commands to make sense of it:
 
 ```bash
-root@chef-book:~/knife_solo/nodes# cd
-root@chef-book:~# cd .ssh/
-root@chef-book:~/.ssh# ls
-id_rsa  id_rsa.pub  known_hosts
-root@chef-book:~/.ssh# cp id_rsa.pub authorized_keys
-root@chef-book:~/.ssh# ssh localhost
-Welcome to Ubuntu 12.04 LTS (GNU/Linux 3.2.0-23-generic x86_64)
+vagrant@chef-book:~/knife_solo/nodes$ sudo cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+vagrant@chef-book:~/knife_solo/nodes$ cd ~/.ssh
+vagrant@chef-book:~/.ssh$
+vagrant@chef-book:~/.ssh$ sudo cp /root/.ssh/id_rsa /root/.ssh/id_rsa.pub .
+vagrant@chef-book:~/.ssh$ sudo chown vagrant.vagrant *
+```
 
- * Documentation:  https://help.ubuntu.com/
-Welcome to your Vagrant-built virtual machine.
+Let's add the root user's private key to our key chain and try SSH:
 
-The programs included with the Ubuntu system are free software;
-the exact distribution terms for each program are described in the
-individual files in /usr/share/doc/*/copyright.
-
-Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
-applicable law.
-
+```bash
+vagrant@chef-book:~/.ssh$ ssh-add id_rsa
+Identity added: id_rsa (id_rsa)
+vagrant@chef-book:~/.ssh$ ssh root@localhost
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is 2c:03:a9:7b:5b:8f:e3:19:e4:08:46:4b:f8:41:1d:18.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'localhost' (ECDSA) to the list of known hosts.
 root@chef-book:~# exit
 logout
 Connection to localhost closed.
-root@chef-book:~/.ssh#
+vagrant@chef-book:~/.ssh$
 ```
 
 If that works, we're ready to start playing with `knife solo`.
 
-Hop up to `~/knife_solo`.
+Hop back to `~/knife_solo`.
 
 ```base
-root@chef-book:~/knife_solo/site-cookbooks# cd ..
-root@chef-book:~/knife_solo#
+vagrant@chef-book:~/.ssh$ cd ~/knife_solo
+vagrant@chef-book:~/knife_solo$
 ```
 
 Lets start with a `knife solo prepare` just to see it work:
 
 ```bash
-root@chef-book:~/knife_solo# knife solo prepare root@localhost
+vagrant@chef-book:~/knife_solo$ knife solo prepare root@localhost
 Bootstrapping Chef...
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-100  6790  100  6790    0     0  22815      0 --:--:-- --:--:-- --:--:-- 40658
-Downloading Chef 11.6.2 for ubuntu...
-Installing Chef 11.6.2
-(Reading database ... 65355 files and directories currently installed.)
-Preparing to replace chef 11.6.2-1.ubuntu.12.04 (using .../chef_11.6.2_amd64.deb) ...
-Unpacking replacement chef ...
-Setting up chef (11.6.2-1.ubuntu.12.04) ...
+100 18378  100 18378    0     0   2963      0  0:00:06  0:00:06 --:--:--  3931
+Downloading Chef 12.1.1 for ubuntu...
+downloading https://www.opscode.com/chef/metadata?v=12.1.1&prerelease=false&nightlies=false&p=ubuntu&pv=14.04&m=x86_64
+  to file /tmp/install.sh.5302/metadata.txt
+trying wget...
+url	https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/13.04/x86_64/chef_12.1.1-1_amd64.deb
+md5	028e2335ff309fa4555ed0dfd486162f
+sha256	108bc8a1786b1a4cfbb42dcea0e4990221340aae669878df3f67fffe1fb1ad24
+downloaded metadata file looks valid...
+downloading https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/13.04/x86_64/chef_12.1.1-1_amd64.deb
+  to file /tmp/install.sh.5302/chef_12.1.1-1_amd64.deb
+trying wget...
+Comparing checksum with sha256sum...
+Installing Chef 12.1.1
+installing with dpkg...
+(Reading database ... 123538 files and directories currently installed.)
+Preparing to unpack .../chef_12.1.1-1_amd64.deb ...
+Unpacking chef (12.1.1-1) over (12.1.1-1) ...
+Setting up chef (12.1.1-1) ...
 Thank you for installing Chef!
-root@chef-book:~/knife_solo#
+vagrant@chef-book:~/knife_solo$
 ```
 
 As you can see it does check the version of chef, then download and install the newsest for you.
@@ -242,31 +360,34 @@ As you can see it does check the version of chef, then download and install the 
 Now lets go on to `knife solo cook`:
 
 ```bash
-root@chef-book:~/knife_solo# knife solo cook root@localhost
+vagrant@chef-book:~/knife_solo$ knife solo cook root@localhost
 Running Chef on localhost...
 Checking Chef version...
 Uploading the kitchen...
 Generating solo config...
 Running Chef...
-Starting Chef Client, version 11.6.2
+Starting Chef Client, version 12.1.1
 Compiling Cookbooks...
 Converging 10 resources
 Recipe: base::default
-  * package[vim] action install (up to date)
-  * package[ntp] action install (up to date)
-  * package[build-essential] action install (up to date)
+  * apt_package[vim] action install (up to date)
+  * apt_package[ntp] action install (up to date)
+  * apt_package[build-essential] action install (up to date)
 Recipe: base::ssh
-  * package[openssh-server] action install (up to date)
+  * apt_package[openssh-server] action install (up to date)
+  * cookbook_file[/etc/ssh/ssh_config] action create (up to date)
   * service[ssh] action enable (up to date)
   * service[ssh] action start (up to date)
-  * cookbook_file[/etc/ssh/ssh_config] action create (up to date)
 Recipe: base::deployer
   * group[deployer] action create (up to date)
   * user[deployer] action create (up to date)
   * directory[/home/deployer/.ssh] action create (up to date)
   * cookbook_file[/home/deployer/.ssh/authorized_keys] action create_if_missing (up to date)
-Chef Client finished, 0 resources updated
-root@chef-book:~/knife_solo#
+
+Running handlers:
+Running handlers complete
+Chef Client finished, 0/11 resources updated in 7.748576421 seconds
+vagrant@chef-book:~/knife_solo$
 ```
 
 CHA-CHING! Awesome. Bonus Round: use `knife solo bootstrap`.
@@ -280,61 +401,41 @@ Now image this with a "cloud" box that you have root access to.  You just provis
 ### knife rackspace
 
 ```bash
-root@chef-book:~# gem install knife-rackspace
-Fetching: eventmachine-1.0.0.beta.3.gem (100%)
-Building native extensions.  This could take a while...
-Successfully installed eventmachine-1.0.0.beta.3
-Fetching: ffi-1.9.0.gem (100%)
-Building native extensions.  This could take a while...
-Successfully installed ffi-1.9.0
-Fetching: gssapi-1.0.3.gem (100%)
-Successfully installed gssapi-1.0.3
-Fetching: httpclient-2.3.4.1.gem (100%)
-Successfully installed httpclient-2.3.4.1
-Fetching: mini_portile-0.5.2.gem (100%)
-Successfully installed mini_portile-0.5.2
-Fetching: nokogiri-1.6.0.gem (100%)
-Building native extensions.  This could take a while...
-Successfully installed nokogiri-1.6.0
-Fetching: rubyntlm-0.1.1.gem (100%)
-Successfully installed rubyntlm-0.1.1
-Fetching: uuidtools-2.1.4.gem (100%)
-Successfully installed uuidtools-2.1.4
-Fetching: builder-3.2.2.gem (100%)
-Successfully installed builder-3.2.2
+vagrant@chef-book:~/knife_solo$ sudo gem install knife-rackspace
+Fetching: little-plugger-1.1.3.gem (100%)
+Successfully installed little-plugger-1.1.3
+Fetching: logging-1.8.2.gem (100%)
+Successfully installed logging-1.8.2
 Fetching: nori-1.1.5.gem (100%)
 Successfully installed nori-1.1.5
-Fetching: rack-1.5.2.gem (100%)
-Successfully installed rack-1.5.2
 Fetching: httpi-0.9.7.gem (100%)
+Successfully installed httpi-0.9.7
+Fetching: mini_portile-0.6.2.gem (100%)
+Successfully installed mini_portile-0.6.2
 
 [-- snip --]
 
-Parsing documentation for ruby-hmac-0.4.0
-Installing ri documentation for ruby-hmac-0.4.0
-Parsing documentation for unicode-0.4.4
-unable to convert "\xF0" from ASCII-8BIT to UTF-8 for lib/unicode, skipping
-Installing ri documentation for unicode-0.4.4
-Parsing documentation for fog-1.16.0
-Installing ri documentation for fog-1.16.0
-Parsing documentation for knife-rackspace-0.8.1
-Installing ri documentation for knife-rackspace-0.8.1
-Done installing documentation for eventmachine, ffi, gssapi, httpclient, mini_portile, nokogiri, rubyntlm, uuidtools, builder, nori, rack, httpi, wasabi, gyoku, akami, savon, little-plugger, multi_json, logging, winrm, em-winrm, knife-windows, excon, formatador, net-scp, ruby-hmac, unicode, fog, knife-rackspace (303 sec).
-29 gems installed
+Parsing documentation for winrm-1.2.0
+Installing ri documentation for winrm-1.2.0
+Parsing documentation for winrm-s-0.2.4
+Installing ri documentation for winrm-s-0.2.4
+Done installing documentation for CFPropertyList, akami, em-winrm, eventmachine, excon, fission, fog, fog-atmos, fog-aws, fog-brightbox, fog-core, fog-ecloud, fog-json, fog-profitbricks, fog-radosgw, fog-riakcs, fog-sakuracloud, fog-serverlove, fog-softlayer, fog-storm_on_demand, fog-terremark, fog-vmfusion, fog-voxel, fog-xml, formatador, gssapi, gyoku, httpclient, httpi, inflecto, knife-rackspace, knife-windows, little-plugger, logging, mini_portile, nokogiri, nori, rubyntlm, savon, wasabi, winrm, winrm-s after 118 seconds
+42 gems installed
+vagrant@chef-book:~/knife_solo$
 ```
 
-There is a nasty catch with knife-rackspace.  You can't have multiple of the gems installing so you need to run:
+There is a nasty catch with knife-rackspace - you can't have multiple versions of the gem installed so you need to run the following to confirm you only have one version installed (and how to remove older version):
 
 ```bash
-$> gem list --local | grep knife-rackspace
+vagrant@chef-book:~/knife_solo$ gem list --local | grep knife-rackspace
 knife-rackspace (0.6.2, 0.5.12)
-$> gem uninstall knife-rackspace -v "= 0.5.12"
+vagrant@chef-book:~/knife_solo$ sudo gem uninstall knife-rackspace -v "= 0.5.12"
 Successfully uninstalled knife-rackspace-0.5.12
-$> gem list --local | grep knife-rackspace
+vagrant@chef-book:~/knife_solo$ gem list --local | grep knife-rackspace
 knife-rackspace (0.6.2)
 ```
 
-To confirm you only have one edition running. Keep this in mind.
+Keep this in mind.
 
 After installing it, you need to add this to your `knife.rb` file:
 
@@ -348,7 +449,7 @@ Run `knife rackspace server list` and you should see your cloud machines.
 Go ahead and attempt to spin up a box:
 
 ```bash
-root@chef-book:~# knife rackspace server create --server-name test -f 4
+vagrant@chef-book:~/knife_solo$ knife rackspace server create --server-name test -f 4
 Instance ID: 17c3d362-6930-452f-86f4-7f4ce0a9453e
 Name: test
 Flavor: 2GB Standard Instance
@@ -414,24 +515,24 @@ Bootstrapping Chef on 192.43.66.2
  Private IP Address: 10.208.154.177
  Password: aoeu534234
  Environment: _default
-root@chef-book:~#
+vagrant@chef-book:~/knife_solo$
 ```
 
 Bonus Round: Try running the `knife rackspace server list` and maybe `knife solo bootstrap` would work here? 
 
 ### knife ec2
 
-`knife ec2` is pretty much the same game, you can install it via the gem. I installed knife-rackspace on my chef-book vm and they have a lot of the same dependancies, so there aren't a lot of gems to fetch.
+`knife ec2` is pretty much the same game, you can install it via the gem. We have already installed knife-rackspace on the chef-book vm and they have a lot of the same dependancies, so there aren't many gems to fetch.
 
 ```bash
-root@chef-book:~# gem install knife-ec2
-Fetching: knife-ec2-0.6.4.gem (100%)
-Successfully installed knife-ec2-0.6.4
-Parsing documentation for knife-ec2-0.6.4
-Installing ri documentation for knife-ec2-0.6.4
-Done installing documentation for knife-ec2 (0 sec).
+vagrant@chef-book:~/knife_solo$ sudo gem install knife-ec2
+Fetching: knife-ec2-0.10.0.gem (100%)
+Successfully installed knife-ec2-0.10.0
+Parsing documentation for knife-ec2-0.10.0
+Installing ri documentation for knife-ec2-0.10.0
+Done installing documentation for knife-ec2 after 0 seconds
 1 gem installed
-root@chef-book:~#
+vagrant@chef-book:~/knife_solo$
 ```
 
 You'll need to edit your `knife.rb` file and add these lines to it:
@@ -444,7 +545,7 @@ knife[:aws_secret_access_key] = "Your AWS Secret Access Key"
 You have more or less the same tools as `knife rackspace` but here's an example:
 
 ```bash
-root@chef-book:~# knife ec2 server create -I ami-7000f019 -f m1.small
+vagrant@chef-book:~/knife_solo$ knife ec2 server create -I ami-7000f019 -f m1.small
 ```
 
 There are a ton more options, but this will get you started. 
@@ -456,8 +557,27 @@ When it comes to knife spork, it's a workflow tool instead of a API tool. I wrot
 Obviously the first thing you need to do is install it. Luckily it's a gem so you can just do the following. If you read the docs there are a bunch of places that you `.yml` gets read from, but I chose this because I like having all my chef stuff in `.chef` so I don't have to think about pulling anything other than `.chef` if I want to move boxes.
 
 ```bash
-gem install knife-spork
-touch ~/.chef/spork-config.yml
+vagrant@chef-book:~/knife_solo$ sudo gem install knife-spork
+Fetching: git-1.2.9.1.gem (100%)
+Successfully installed git-1.2.9.1
+Fetching: app_conf-0.4.2.gem (100%)
+Successfully installed app_conf-0.4.2
+Fetching: diffy-3.0.7.gem (100%)
+Successfully installed diffy-3.0.7
+Fetching: knife-spork-1.5.1.gem (100%)
+Successfully installed knife-spork-1.5.1
+Parsing documentation for app_conf-0.4.2
+Installing ri documentation for app_conf-0.4.2
+Parsing documentation for diffy-3.0.7
+Installing ri documentation for diffy-3.0.7
+Parsing documentation for git-1.2.9.1
+Installing ri documentation for git-1.2.9.1
+Parsing documentation for knife-spork-1.5.1
+Installing ri documentation for knife-spork-1.5.1
+Done installing documentation for app_conf, diffy, git, knife-spork after 1 seconds
+4 gems installed
+vagrant@chef-book:~/knife_solo$ touch ~/.chef/spork-config.yml
+vagrant@chef-book:~/knife_solo$
 ```
 
 After installing the gem and touching the file, you can run `knife spork info`, it should say everything is disabled.  If so, then you are read to create the config file.
@@ -520,13 +640,8 @@ Ok, so you have everything set up, what do you do now?
 Usage
 -----
 
-The first step is to run `knife spork check COOKBOOK --all` where COOKBOOK is one of your commonly updated/tweaked cookbooks.  Spork checks against what you have locally compared to what's in the server, like this:
+The first step is to run `knife spork check COOKBOOK --all` where COOKBOOK is one of your commonly updated/tweaked cookbooks.  Spork checks against what you have locally compared to what's in the server, here's an example:
 
-```
-knife spork check COOKBOOK --all
-```
-
-Here's an example:
 ```bash
 Checking versions for cookbook nagios...
 
@@ -544,10 +659,9 @@ ERROR: The version 5.1.5 exists on the server and is not frozen. Uploading will 
 
 As you can see with the error, it's pretty self explaintory.
 
-The second step is to bump the version:
+The second step is to bump the version with `knife spork bump nagios patch`, here's some example output:
 
 ```bash
-knife spork bump nagios patch
 Git: Pulling latest changes from /Users/jasghar/repo/chef_repo/environments
 Pulling latest changes from git submodules (if any)
 Git: Pulling latest changes from /Users/jasghar/repo/chef_repo/cookbooks/nagios
