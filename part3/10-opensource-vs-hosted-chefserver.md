@@ -187,13 +187,32 @@ NOTE: Hosted chef is free up to 5 nodes, so you should easily be able to test th
 First thing you'll need to do is go [here](https://getchef.opscode.com/signup) fill in the relevant data, and click the Get Started button.
 The most important part of it is your `Chef Organization` name. That is the unique name that identifies your grouping of machines.Last time I checked you can't change it, so pick something important enough but unique at the same time.
 
-The next window that comes up is the "Thank you for choosing Enterprise Chef" and gives you 3 steps to get going. Go ahead and click the "Set up your workstation" you can come back to the "Download Starter Kit" at another time. So you can see it clicks you over to [here](https://learnchef.opscode.com/quickstart/workstation-setup/) and must if not all of it should make sense by now ;). Awesome lets move on.
+The next window that comes up is the "Thank you for choosing Enterprise Chef" and gives you 2 steps to get going; "Download Starter Kit" and "Learn Chef" which you can come back to at another time. Awesome lets move on.
 
-Go ahead and find the `Sign In` page, I did it by refreshing the page. It seems odd that there isn't a way directly to it from all that information, but meh, I found it.  Login and you should see "Opscode Manage" in the top right.  This is the main site to work from.
+Now we need a key right? Lets get one going.  Go ahead and click "Users" on the left hand side, and click your user. Click "Reset Key" on the left hand side, and you should see something that looks extremely familiar. Go ahead and click "Download" and then "Close" because that's how you talk to your Org at opscode.
 
-Now we need a key right? Lets get one going.  Go ahead and click "Administrative" at the top, and click your user. Click "Reset Key" on the left hand side, and you should see something that looks extremely familiar. Go ahead and copy that off in 2 locations because that's how you talk to your Org at opscode.
+Go ahead and click on "Organizations" and select your organization. First select "Reset Validation Key" on the left hand side and download the .pem file. Then select the "Generate Knife Config" (which will download a `knife.rb file` for you).
 
-Go ahead and click on "Organizations" and click on the little Gear by your organization name. There is a drop down box that allows a creation of a `knife.rb`, and take that data and put it in your `knife.rb`. The most important parts obviously is the `chef_server_url` and the `client_key` make sure that's correct, and run your `knife client list` and you should see:
+Copy these three files to a directory in your vagrant box directory (we've been using `~/vagrant/chef-book` on our host machine); this directory is shared with your Vagrant box at `/vagrant`. We'll then copy these files to our user:
+
+```bash
+[~/vagrant/chef-book] % mkdir knife-hosted-chef
+[~/vagrant/chef-book] % cd knife-hosted-chef
+[~/vagrant/chef-book/knife-hosted-chef] % cp ~/Downloads/org-validator.pem ~/Downloads/user.pem ~/Downloads/knife.pem .
+```
+
+* Replace the `org-validator.pem` and `user.pem` filenames with the files downloaded when clicking "Download" on the Chef Hosted site.
+
+Now that we have the files in our shared directory, let's copy them to our chef-book vagrant box:
+
+```bash
+[~/vagrant/chef-book/knife-hosted-chef] % vagrant ssh
+vagrant@chef-book:~$ cd .chef
+vagrant@chef-book:~/.chef$ cp /vagrant/knife-hosted-chef/* .
+vagrant@chef-book:~/.chef$
+```
+
+Feel free to take a look at the new `knife.rb` file that was generated for you. The most important parts obviously is the `chef_server_url` and the `client_key` make sure that's correct, and run your `knife client list` and you should see:
 
 ```bash
 root@chef-book:~/.chef# knife client list
