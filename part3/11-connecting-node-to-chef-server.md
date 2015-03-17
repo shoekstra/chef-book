@@ -4,7 +4,7 @@ The main part of chef that allows you to connect a _node_ to a chef server is ca
 
 As you can see, the difference between chef-client/server and chef-solo is actaully pretty negagiable; so yes I was telling the truth about the 75-85% coverage of chef-solo. ;)
 
-Being that Hosted chef and open source chef have a tad differance hooking up nodes to the chef-server, i'll cover both here. Ideally this will be the last time i call out the differance.
+Being that Hosted chef and open source chef have a tad differance hooking up nodes to the chef-server, I'll cover both here. Ideally this will be the last time I call out the differance.
 
 ## Open Source Chef server
 
@@ -74,14 +74,15 @@ Congrats!
 ## Hosted Chef server
 
 First things first, you need to go [here](https://manage.opscode.com/login) and log in with you credentials you created earlier. Assuming you haven't added any nodes yet you should see a friendly "You have no nodes - try connecting one, or creating or editing a node" reminder. Don't bother with creating a node by hand right now, let's use the validator like we did with Open Source chef. Click on "Clients" and you should see "<your-org-name>-validator". Click on that "Regenerate API Key" and copy it to two locations because this is your key to authenticatiing your machnines to this hosted box.
-Go ahead and copy that pem file to your Vagrant box, i suggest throwing it in the location of Vagrantfile, so you can just copy it in via /vagrant. So something like this:
+Go ahead and copy that pem file to your Vagrant box, I suggest throwing it in the location of Vagrantfile, so you can just copy it in via /vagrant. So something like this:
+
+Let's copy the organization validator we downloaded earlier, remember to replace 'org' with your organization's name:
 
 ```bash
-[~] % cp Downloads/<org-name>-validator.pem ~/vagrant/chef-book
-root@chef-book:~# cp /vagrant/<org-name>-validator.pem ./
+vagrant@chef-book:~$ sudo cp /vagrant/knife-hosted-chef/org-validator.pem /root/
 ```
 
-Ok, now lets edit the `~/.chef/knife.rb`, `/etc/chef/client.rb` files so they can talk to it:
+Ok, now lets edit the `~/.chef/knife.rb`, `/etc/chef/client.rb` files so they can talk to it (you will need to prefix the command with `sudo` in order to edit the /etc/chef/client.rb, e.g. `sudo nano /etc/chef/client.rb`):
 
 ```ruby
 log_level                :info
@@ -108,28 +109,34 @@ validation_key           "/root/<org-name>-validator.pem"
 Now run `chef-client` and you should see something like this:
 
 ```bash
-root@chef-book:~# chef-client
-[2013-10-29T17:40:14+00:00] INFO: Forking chef instance to converge...
-Starting Chef Client, version 11.6.2
-[2013-10-29T17:40:14+00:00] INFO: *** Chef 11.6.2 ***
+vagrant@chef-book:~$ sudo chef-client
+[2015-03-17T11:24:00-05:00] INFO: Forking chef instance to converge...
+Starting Chef Client, version 12.1.1
+[2015-03-17T11:24:00-05:00] INFO: *** Chef 12.1.1 ***
+[2015-03-17T11:24:00-05:00] INFO: Chef-client pid: 7483
 Creating a new client identity for chef-book using the validator key.
-[2013-10-29T17:40:15+00:00] INFO: Client key /etc/chef/client.pem is not present - registering
-[2013-10-29T17:40:16+00:00] INFO: Run List is []
-[2013-10-29T17:40:16+00:00] INFO: Run List expands to []
-[2013-10-29T17:40:16+00:00] INFO: Starting Chef Run for chef-book
-[2013-10-29T17:40:16+00:00] INFO: Running start handlers
-[2013-10-29T17:40:16+00:00] INFO: Start handlers complete.
+[2015-03-17T11:24:02-05:00] INFO: Client key /etc/chef/client.pem is not present - registering
+[2015-03-17T11:24:03-05:00] INFO: HTTP Request Returned 404 Object Not Found: error
+[2015-03-17T11:24:03-05:00] INFO: Run List is []
+[2015-03-17T11:24:03-05:00] INFO: Run List expands to []
+[2015-03-17T11:24:03-05:00] INFO: Starting Chef Run for chef-book
+[2015-03-17T11:24:03-05:00] INFO: Running start handlers
+[2015-03-17T11:24:03-05:00] INFO: Start handlers complete.
 resolving cookbooks for run list: []
-[2013-10-29T17:40:16+00:00] INFO: Loading cookbooks []
+[2015-03-17T11:24:05-05:00] INFO: Loading cookbooks []
 Synchronizing Cookbooks:
 Compiling Cookbooks...
-[2013-10-29T17:40:16+00:00] WARN: Node chef-book has an empty run list.
+[2015-03-17T11:24:05-05:00] WARN: Node chef-book has an empty run list.
 Converging 0 resources
-[2013-10-29T17:40:16+00:00] INFO: Chef Run complete in 0.736758934 seconds
-[2013-10-29T17:40:16+00:00] INFO: Running report handlers
-[2013-10-29T17:40:16+00:00] INFO: Report handlers complete
-Chef Client finished, 0 resources updated
-root@chef-book:~#
+[2015-03-17T11:24:06-05:00] INFO: Chef Run complete in 2.072902014 seconds
+
+Running handlers:
+[2015-03-17T11:24:06-05:00] INFO: Running report handlers
+Running handlers complete
+[2015-03-17T11:24:06-05:00] INFO: Report handlers complete
+Chef Client finished, 0/0 resources updated in 5.142557908 seconds
+[2015-03-17T11:24:06-05:00] INFO: Sending resource update report (run-id: d1e86db6-4df9-423e-b521-f212fecf8ad6)
+vagrant@chef-book:~$
 ```
 
 Congrats! You've connected a your chef-book vm to Hosted Chef!
