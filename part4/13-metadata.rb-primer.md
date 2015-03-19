@@ -9,7 +9,7 @@ Uploaded 1 cookbook.
 root@chef-book:~#
 ```
 
-The metadata.rb controls the version number like above, and a lot other basic generic data. If you recall back to the [knife.rb](part3/8-knife.md#kniferb) section where you created the cookbook, `new_cookbook/metadata.rb` was created. If you have blown it away, this is what it looks like:
+The metadata.rb controls the version number like above, and a lot other basic generic data. If you recall back to the [knife.rb](../part3/08-knife.md#kniferb) section where you created the cookbook, `new_cookbook/metadata.rb` was created. If you have blown it away, this is what it looks like:
 
 ```ruby
 name             'new_cookbook'
