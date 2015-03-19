@@ -48,6 +48,8 @@ vagrant@chef-book:~$
 
 Lets try and upload the cookbook:
 
+
+
 ```bash
 vagrant@chef-book:~$ knife cookbook upload base
 Uploading base         [0.1.0]
