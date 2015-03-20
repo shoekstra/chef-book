@@ -1,18 +1,16 @@
 # Uploading your cookbook to your chef server
 
-So you have a working chef server eh? Great! Now let's actually start working with it.  Before you start anything, I need you to run something like this:
+Before we try to upload our cookbook, I need you to run something like this:
 
 ```bash
-agrant@chef-book:~$ knife status
+vagrant@chef-book:~$ knife status
 0 minutes ago, chef-book, chef-book, 10.0.2.15, ubuntu 14.04.
-agrant@chef-book:~$
+vagrant@chef-book:~$
 ```
 
 If `knife` can talk to your chef server you are good to go. If not, [hop back](../README.md#contents) a couple sections and try to figure out what broke. Don't worry I'll be here when you get back.
 
-Perfect, lets start off.
-
-Remember that cookbook you created? Way back in [Part 2-6](../part2/06-write-simple-base-cookbook.md) we're gonna upload that one first off. Go ahead and look at your `knife.rb` for me:
+Perfect, lets start off by uploading our base cookbook. Go ahead and look at your `knife.rb` for me:
 
 ```bash
 vagrant@chef-book:~$ cat .chef/knife.rb
@@ -25,7 +23,7 @@ syntax_check_cache_path  '/root/.chef/syntax_check_cache'
 vagrant@chef-book:~$
 ```
 
-If you notice I don't have a `cookbook_path` directory, i need add one:
+If you notice I don't have a `cookbook_path` directory, I need to add one:
 
 ```bash
 vagrant@chef-book:~$ cat .chef/knife.rb
@@ -39,27 +37,30 @@ syntax_check_cache_path  '/root/.chef/syntax_check_cache'
 vagrant@chef-book:~$
 ```
 
-Pretty self explaintory eh? Go ahead and copy that `base/` cookbook into the directory that you declare on that line:
+Pretty self explaintory eh? 
+
+Lets try and upload the `base` cookbook:
 
 ```bash
-vagrant@chef-book:~$ cp -r /vagrant/cookbooks/base/ cookbooks/
+vagrant@chef-book:~$ knife cookbook upload base
+ERROR: Errno::ENOENT: No such file or directory @ rb_sysopen - /home/vagrant/cookbooks/base/README.md
 vagrant@chef-book:~$
 ```
 
-Lets try and upload the cookbook:
-
-
+Do'h! It seems we need a `README.md` now, this is great habit to have. I'm lazy so I'll just touch the file and try again:
 
 ```bash
+vagrant@chef-book:~$ touch /home/vagrant/cookbooks/base/README.md
+vagrant@chef-book:~$
 vagrant@chef-book:~$ knife cookbook upload base
 Uploading base         [0.1.0]
 Uploaded 1 cookbook.
 vagrant@chef-book:~$
 ```
 
-Awesome! You uploaded your first cookbook. Notice the `[0.1.0]` that is controlled about the [metadata.rb](http://docs.opscode.com/essentials_cookbook_metadata.html) file. We'll talk about that is a sec.
+Awesome! Notice the `[0.1.0]` that is controlled about the [metadata.rb](http://docs.opscode.com/essentials_cookbook_metadata.html) file. Now check out your cookbooks on your server and you should also see `[0.1.0]`.
 
-Now let's add base to the `run_list`:
+Now let's add base to the `run_list` for the `chef-book` node:
 
 ```bash
 vagrant@chef-book:~$ knife node run_list add chef-book base
@@ -123,4 +124,9 @@ vagrant@chef-book:~$
 
 CHA-CHING!!!! Congrats you have uploaded your cookbook and run the client to apply it. Awesome!
 
-Lets talk about that [metadata.rb](13-metadata.rb-primer.md).
+Lets take a step back from chef and talk about versioning. The chef community has basiclly decided that [Semantic Versioning](http://semver.org/) is the defacto standard for cookbooks. There is A TON of data on that link, but to sum it up I explain it like this:
+> A patch change is "x.y.Z". Anything larger than a patch, example adding a test, is a "x.Y.z" change. Anything that adds new functionality for an internal cookbook is "X.y.z," if you are pulling public run cookbooks stick with the system they use.
+
+It's not 100% accurate, but it's a great rule of thumb.
+
+Ok, so why should I care about versioning, well it's good to track your changes right? It's also a great way "pin" versions for different environments, which I'll talk about [next](14-environments-roles-oh-my.md).
