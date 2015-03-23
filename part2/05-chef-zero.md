@@ -25,8 +25,7 @@ Welcome to Ubuntu 12.04.4 LTS (GNU/Linux 3.2.0-23-generic x86_64)
  * Documentation:  https://help.ubuntu.com/
 Welcome to your Vagrant-built virtual machine.
 Last login: Sat Jun 28 10:35:10 2014 from 10.0.2.2
-vagrant@chef-book:~$ sudo su -
-root@chef-book:~# chef-client -z
+vagrant@chef-book:~$ sudo chef-client -z
 [2014-06-28T12:42:31-07:00] WARN: No config file found or specified on command line, using command line options.
 [2014-06-28T12:42:31-07:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
 [2014-06-28T12:42:31-07:00] WARN:
@@ -62,7 +61,7 @@ Running handlers:
 Running handlers complete
 
 Chef Client finished, 0/0 resources updated in 1.523881501 seconds
-root@chef-book:~#
+vagrant@chef-book:~$
 ```
 
 A few complaints about SSL, but other than that... nothing really happened. 
@@ -76,8 +75,8 @@ with throwaway VMs, we can tell Chef to only use SSL when communicating with
 their hosted API. We do this by creating a configuration file used by chef-zero:
 
 ```bash
-root@chef-book:~# mkdir -p ~/.chef
-root@chef-book:~# vim ~/.chef/knife.rb
+vagrant@chef-book:~$ mkdir -p ~/.chef
+vagrant@chef-book:~$ vim ~/.chef/knife.rb
 ```
 
 and add the following line:
@@ -89,7 +88,7 @@ verify_api_cert true
 Re-run chef-client and the SSL warnings should be gone.
 
 ```bash
-root@chef-book:~# chef-client -z
+vagrant@chef-book:~$ sudo chef-client -z
 [2014-06-28T12:42:31-07:00] WARN: No cookbooks directory found at or above current directory.  Assuming /root.
 Starting Chef Client, version 11.14.0.alpha.1
 resolving cookbooks for run list: []
@@ -102,7 +101,7 @@ Running handlers:
 Running handlers complete
 
 Chef Client finished, 0/0 resources updated in 1.523881501 seconds
-root@chef-book:~#
+vagrant@chef-book:~$
 ```
 
 Now let's go on to actually making Chef do something!
