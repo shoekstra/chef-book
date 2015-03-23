@@ -106,6 +106,6 @@ vagrant@chef-book:~$
 
 Now let's go on to actually making Chef do something!
 
-Move on to [A simple cookbook](06-write-simple-base-cookbook.md)
+Move on to [a simple cookbook](06-write-simple-base-cookbook.md)
 
 [cz]: http://www.getchef.com/blog/2013/10/31/chef-client-z-from-zero-to-chef-in-8-5-seconds/
